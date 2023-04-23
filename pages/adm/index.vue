@@ -22,4 +22,8 @@
 <script setup>
 import { useListCartStore } from '@/stores/listCart';
 const listCart = useListCartStore();
+
+definePageMeta({
+  middleware: ['product-guard']
+})
 </script>

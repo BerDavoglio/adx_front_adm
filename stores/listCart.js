@@ -3,80 +3,31 @@ import { defineStore } from "pinia";
 export const useListCartStore = defineStore("listCart", {
   state: () => {
     return {
-      listCart: [
-        {
-          id: 1,
-          name: "Produto 1",
-          price: 10,
-          stock: 10,
-          img: "https://dummyimage.com/600x400/483291/fff",
-          size: "P;M;G",
-          color: "Branco;Preto;Bege",
-          material: "Nylon;Algodão",
-        },
-        {
-          id: 2,
-          name: "Produto 2",
-          price: 20,
-          stock: 15,
-          img: "https://dummyimage.com/600x400/837635/fff",
-          size: "P;M;G",
-          color: "Branco;Preto;Bege",
-          material: "Nylon;Algodão",
-        },
-        {
-          id: 3,
-          name: "Produto 3",
-          price: 30,
-          stock: 20,
-          img: "https://dummyimage.com/600x400/203948/fff",
-          size: "P;M;G",
-          color: "Branco;Preto;Bege",
-          material: "Nylon;Algodão",
-        },
-        {
-          id: 4,
-          name: "Produto 4",
-          price: 40,
-          stock: 25,
-          img: "https://dummyimage.com/600x400/109654/fff",
-          size: "P;M;G",
-          color: "Branco;Preto;Bege",
-          material: "Nylon;Algodão",
-        },
-        {
-          id: 5,
-          name: "Produto 5",
-          price: 50,
-          stock: 30,
-          img: "https://dummyimage.com/600x400/132897/fff",
-          size: "P;M;G",
-          color: "Branco;Preto;Bege",
-          material: "Nylon;Algodão",
-        },
-        {
-          id: 6,
-          name: "Produto 6",
-          price: 60,
-          stock: 35,
-          img: "https://dummyimage.com/600x400/321890/fff",
-          size: "P;M;G",
-          color: "Branco;Preto;Bege",
-          material: "Nylon;Algodão",
-        },
-        {
-          id: 7,
-          name: "Produto 7",
-          price: 70,
-          stock: 40,
-          img: "https://dummyimage.com/600x400/574830/fff",
-          size: "P;M;G",
-          color: "Branco;Preto;Bege",
-          material: "Nylon;Algodão",
-        },
-      ],
+      listCart: [],
     };
   },
   getters: {},
-  actions: {},
+  actions: {
+    async loadData() {
+      const { data } = await useFetch("http://127.0.0.1:3000/products/");
+      this.listCart = data.value;
+    },
+    async createProduct(bodyNew) {
+      await useFetch("http://127.0.0.1:3000/products/", {
+        method: "POST",
+        body: bodyNew,
+      });
+    },
+    async updateProduct(id, bodyUpdated) {
+      await useFetch("http://127.0.0.1:3000/products/" + id, {
+        method: "PATCH",
+        body: bodyUpdated,
+      });
+    },
+    async deleteProduct(id) {
+      await useFetch("http://127.0.0.1:3000/products/" + id, {
+        method: "DELETE",
+      });
+    }
+  },
 });

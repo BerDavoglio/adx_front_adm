@@ -13,17 +13,21 @@
         </div>
       </NuxtLink>
       <div class="w-[42rem] border-black border-2 mx-auto my-4 p-4 rounded-md">
-        <input placeholder="Nome" :value="listCart[id].name" class="w-full h-12 p-2 border-gray-300 border-2 rounded-md" />
-        <input placeholder="Preço" :value="listCart[id].price" class="w-full h-12 p-2 mt-2 border-gray-300 border-2 rounded-md" />
-        <input placeholder="Quantidade" :value="listCart[id].stock" class="w-full h-12 p-2 mt-2 border-gray-300 border-2 rounded-md" />
-        <input placeholder="Imagem [ex: https://imgur.com/a/...]" :value="listCart[id].img"
+        <input placeholder="Nome" v-model="name"
+          class="w-full h-12 p-2 border-gray-300 border-2 rounded-md" />
+        <input placeholder="Preço" v-model="price" type="number"
           class="w-full h-12 p-2 mt-2 border-gray-300 border-2 rounded-md" />
-        <input placeholder="Tamanhos [ex: P;M;G;GG]" :value="listCart[id].size" class="w-full h-12 p-2 mt-2 border-gray-300 border-2 rounded-md" />
-        <input placeholder="Cores [ex: Branco;Preto;Amarelo;Vermelho]" :value="listCart[id].color"
+        <input placeholder="Quantidade" v-model="stock" type="number"
           class="w-full h-12 p-2 mt-2 border-gray-300 border-2 rounded-md" />
-        <input placeholder="Material [ex: Poliester;Algodão]" :value="listCart[id].material"
+        <input placeholder="Imagem [ex: https://imgur.com/a/...]" v-model="img"
           class="w-full h-12 p-2 mt-2 border-gray-300 border-2 rounded-md" />
-        <div
+        <input placeholder="Tamanhos [ex: P;M;G;GG]" v-model="size"
+          class="w-full h-12 p-2 mt-2 border-gray-300 border-2 rounded-md" />
+        <input placeholder="Cores [ex: Branco;Preto;Amarelo;Vermelho]" v-model="color"
+          class="w-full h-12 p-2 mt-2 border-gray-300 border-2 rounded-md" />
+        <input placeholder="Material [ex: Poliester;Algodão]" v-model="material"
+          class="w-full h-12 p-2 mt-2 border-gray-300 border-2 rounded-md" />  
+        <div @click="update()"
           class="w-[80%] m-auto cursor-pointer bg-green-500 hover:bg-green-700 hover:text-white py-3 rounded-xl mt-10 mb-4">
           <div class="w-fit mx-auto">Editar</div>
         </div>
@@ -36,4 +40,33 @@
 const { id } = useRoute().params
 import { useListCartStore } from '@/stores/listCart';
 const listCart = useListCartStore().listCart;
+let objIndex = listCart.findIndex((x) => x._id === id);
+
+const snackbar = useSnackbar();
+
+let name = listCart[objIndex].name;
+let price = listCart[objIndex].price;
+let stock = listCart[objIndex].stock;
+let img = listCart[objIndex].img;
+let size = listCart[objIndex].size;
+let color = listCart[objIndex].color;
+let material = listCart[objIndex].material;
+
+async function update() {
+  let object = {
+    "name": name,
+    "price": price,
+    "stock": stock,
+    "img": img,
+    "size": size,
+    "color": color,
+    "material": material
+  }
+  await useListCartStore().updateProduct(id, object);
+  snackbar.add({
+    type: 'success',
+    text: 'Produto atualizado com Sucesso!'
+  })
+  history.back();
+}
 </script>
