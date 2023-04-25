@@ -9,23 +9,23 @@ export const useListCartStore = defineStore("listCart", {
   getters: {},
   actions: {
     async loadData() {
-      const { data } = await useFetch("http://127.0.0.1:3000/products/");
+      const { data } = await useFetch("https://adx-backend-berdavoglio.onrender.com/products/");
       this.listCart = data.value;
     },
     async createProduct(bodyNew) {
-      await useFetch("http://127.0.0.1:3000/products/", {
+      await useFetch("https://adx-backend-berdavoglio.onrender.com/products/", {
         method: "POST",
         body: bodyNew,
       });
     },
     async updateProduct(id, bodyUpdated) {
-      await useFetch("http://127.0.0.1:3000/products/" + id, {
+      await useFetch("https://adx-backend-berdavoglio.onrender.com/products/" + id, {
         method: "PATCH",
         body: bodyUpdated,
       });
     },
     async deleteProduct(id) {
-      await useFetch("http://127.0.0.1:3000/products/" + id, {
+      await useFetch("https://adx-backend-berdavoglio.onrender.com/products/" + id, {
         method: "DELETE",
       });
     }
